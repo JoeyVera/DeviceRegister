@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Device Registration</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function($) {
+
+            $('select[name=devtype]').change(function() {
+                // hide optional elements
+                $('.type-gateway').hide();
+
+
+                $("select[name=devtype] option:selected").each(function() {
+                    var value = $(this).val();
+                    if (value == "Gateway") {
+                        $('.type-gateway').show();
+
+                    } else  {
+                        $('.type-gateway').hide();
+
+                    } 
+
+                });
+
+            }).change();//on load it run the change event
+
+            $('#btnRegister').click(function () {
+                              
+                // Make a device object.
+                var device = {
+                    "SerialNumber": $('#txtSerialNumber').val(),
+                    "Brand": $('#txtBrand').val(),
+                    "Model": $('#txtModel').val(),
+                    "Ip": $('#txtIp').val(),
+                    "Port": $('#txtPort').val(),
+                    "Type": $('#deviceType').val()
+
+                };
+
+                $.ajax({
+                    url: 'http://localhost:26647/api/Devices',
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(device),
+                    dataType: "json",
+                    success: function (result) {
+                        alert("The device has been saved.");
+                    },
+                    error: function (err) {
+                        alert(err.responseText);
+                    }
+                });
+            });
+        });
+
+
+        
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Register for devices</h2>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtFirstName">Serial Number:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="txtSerialNumber" placeholder="Enter serial number" name="serialnumber">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtBrand">Brand:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="txtBrand" placeholder="Enter brand" name="brand">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtModel">Model:</label>
+                <div class="col-sm-3">
+                    <input type="email" class="form-control" id="txtModel" placeholder="Enter model" name="model">
+                </div>
+            </div>
+
+            <div id="type" class="form-group">
+                <label class="control-label col-sm-2" for="deviceType">Device Type:</label>
+                <div class="col-sm-3">
+                    <select class="form-control" id="deviceType" name="devtype">
+                        <option value="WaterMeter">Water Meter</option>
+                        <option value="EnergyMeter">Energy Meter</option>
+                        <option value="Gateway">Gateway</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group type-gateway">
+                <label class="control-label col-sm-2" for="txtIp">IP:</label>
+                <div class="col-sm-3">
+                    <input type="email" class="form-control" id="txtIp" placeholder="Enter IP" name="ip">
+                </div>
+            </div>
+
+            <div class="form-group type-gateway">
+                <label class="control-label col-sm-2" for="txtPort">Port:</label>
+                <div class="col-sm-3">
+                    <input type="email" class="form-control" id="txtPort" placeholder="Enter port" name="port">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" class="btn btn-success" id="btnRegister">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

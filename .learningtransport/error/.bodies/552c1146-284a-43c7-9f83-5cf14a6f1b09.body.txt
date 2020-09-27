@@ -1,0 +1,1 @@
+<?xml version="1.0"?><AddDevice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.net/DeviceRegisterNServiceBus"><device><Id>e1b6c6f6-20ea-4870-bf36-dc852c627897</Id><SerialNumber>8608681</SerialNumber><Brand>MyBrand12</Brand><Model>MyModel30</Model><Ip></Ip><Port xsi:nil="true"></Port></device></AddDevice>

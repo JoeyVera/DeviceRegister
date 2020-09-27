@@ -1,0 +1,9 @@
+{
+  "NServiceBus.OriginatingEndpoint": "DeviceRegisterNServiceBus",
+  "NServiceBus.OriginatingMachine": "DESKTOP-BSPM0AC",
+  "$.diagnostics.originating.hostid": "570688a8e5caa5bcc4124c3b1b0aa6a9",
+  "$.diagnostics.hostdisplayname": "DESKTOP-BSPM0AC",
+  "NServiceBus.EnclosedMessageTypes": "NServiceBus.Metrics.EndpointMetadataReport",
+  "NServiceBus.ContentType": "application\/json",
+  "NServiceBus.Transport.Learning.TimeToBeReceived": "7.00:00:00"
+}
