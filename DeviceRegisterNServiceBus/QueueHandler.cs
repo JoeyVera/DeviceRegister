@@ -20,7 +20,7 @@ namespace DeviceRegisterNServiceBus
 
 
             //I need to perform the following conversion because of: System.InvalidCastException: Unable to cast object of type 'DeviceRegister.Models.IDevice' to type 'DeviceRegister.Models.EnergyMeter'.
-            IDevice receivedDevice = message.device;
+            Device receivedDevice = message.device;
 
             switch (message.device.Type)
             {

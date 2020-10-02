@@ -38,11 +38,11 @@ namespace DeviceRegisterUnitTest
 
         public static async Task Cleanup() //Clean up tasks
         {
-            IDevice device; Guid item;
+            Device device; Guid item;
 
             var actionResult = await controller.GetDeviceBySerialNumber("DUMMYTESTSN", "DeviceRegister.Models.EnergyMeter");
             OkObjectResult okor = actionResult.Result as OkObjectResult;
-            device = (IDevice)okor.Value;
+            device = (Device)okor.Value;
             if (device != null)
             {
                 item = device.Id;
@@ -50,7 +50,7 @@ namespace DeviceRegisterUnitTest
             }
             actionResult = await controller.GetDeviceBySerialNumber("DUMMYTESTSN", "DeviceRegister.Models.WaterMeter");
             okor = actionResult.Result as OkObjectResult;
-            device = (IDevice)okor.Value;
+            device = (Device)okor.Value;
             if (device != null)
             {
                 item = device.Id;
@@ -58,7 +58,7 @@ namespace DeviceRegisterUnitTest
             }
             actionResult = await controller.GetDeviceBySerialNumber("DUMMYTESTSN", "DeviceRegister.Models.Gateway");
             okor = actionResult.Result as OkObjectResult;
-            device = (IDevice)okor.Value;
+            device = (Device)okor.Value;
             if (device != null)
             {
                 item = device.Id;
@@ -81,20 +81,19 @@ namespace DeviceRegisterUnitTest
         [TestMethod]
         public async Task Run_01_PostingEnergyMeter()
         {
-            IDevice energyMeter = new EnergyMeter("DUMMYTESTSN", "MyBrand", "MyModel");
+            Device energyMeter = new EnergyMeter("DUMMYTESTSN", "MyBrand", "MyModel");
             var actionResult = await controller.PostDevice(energyMeter);
             OkObjectResult okor = actionResult.Result as OkObjectResult;
-            energyMeter = (IDevice)okor.Value;
+            energyMeter = (Device)okor.Value;
             Assert.AreEqual(actionResult.Result.ToString(), "Microsoft.AspNetCore.Mvc.OkObjectResult");
         }
        
         [TestMethod]
         public async Task Run_02_PostingDuplicateEnergyMeter()
         {
-            IDevice energyMeter = new EnergyMeter("DUMMYTESTSN", "MyBrand", "MyModel");
+            Device energyMeter = new EnergyMeter("DUMMYTESTSN", "MyBrand", "MyModel");
             var actionResult = await controller.PostDevice(energyMeter);
             actionResult = await controller.PostDevice(energyMeter);
-            string result = actionResult.Result.ToString();
             Assert.AreEqual(actionResult.Result.ToString(), "Microsoft.AspNetCore.Mvc.BadRequestObjectResult");
         }
         
@@ -102,15 +101,15 @@ namespace DeviceRegisterUnitTest
         public async Task Run_03_GettingEnergyMeter()
         {
             Guid item;
-            IDevice energyMeter = new EnergyMeter("DUMMYTESTSN", "MyBrand", "MyModel");
+            Device energyMeter = new EnergyMeter("DUMMYTESTSN", "MyBrand", "MyModel");
             var actionResult = await controller.PostDevice(energyMeter);
             OkObjectResult okor = actionResult.Result as OkObjectResult;
-            energyMeter = (IDevice)okor.Value;
+            energyMeter = (Device)okor.Value;
             item = energyMeter.Id;
             var result = await controller.GetDevice(item);
             actionResult = await controller.GetDevice(item);
             okor = actionResult.Result as OkObjectResult;
-            IDevice returnedMeter = (IDevice)okor.Value;
+            Device returnedMeter = (Device)okor.Value;
             Assert.AreEqual(returnedMeter.Id, item);        
         }
        
@@ -118,10 +117,10 @@ namespace DeviceRegisterUnitTest
         public async Task Run_04_DeletingEnergyMeter()
         {
             Guid item;
-            IDevice energyMeter = new EnergyMeter("DUMMYTESTSN", "MyBrand", "MyModel");
+            Device energyMeter = new EnergyMeter("DUMMYTESTSN", "MyBrand", "MyModel");
             var actionResult = await controller.PostDevice(energyMeter);
             OkObjectResult okor = actionResult.Result as OkObjectResult;
-            energyMeter = (IDevice)okor.Value;
+            energyMeter = (Device)okor.Value;
             item = energyMeter.Id;
             actionResult = await controller.DeleteDevice(item);
             Assert.AreEqual(actionResult.Result.ToString(), "Microsoft.AspNetCore.Mvc.OkObjectResult");
@@ -132,17 +131,17 @@ namespace DeviceRegisterUnitTest
         [TestMethod]
         public async Task Run_05_PostingWaterMeter()
         {
-            IDevice WaterMeter = new WaterMeter("DUMMYTESTSN", "MyBrand", "MyModel");
+            Device WaterMeter = new WaterMeter("DUMMYTESTSN", "MyBrand", "MyModel");
             var actionResult = await controller.PostDevice(WaterMeter);
             OkObjectResult okor = actionResult.Result as OkObjectResult;
-            WaterMeter = (IDevice)okor.Value;
+            WaterMeter = (Device)okor.Value;
             Assert.AreEqual(actionResult.Result.ToString(), "Microsoft.AspNetCore.Mvc.OkObjectResult");
         }
 
         [TestMethod]
         public async Task Run_06_PostingDuplicateWaterMeter()
         {
-            IDevice WaterMeter = new WaterMeter("DUMMYTESTSN", "MyBrand", "MyModel");
+            Device WaterMeter = new WaterMeter("DUMMYTESTSN", "MyBrand", "MyModel");
             var actionResult = await controller.PostDevice(WaterMeter);
             actionResult = await controller.PostDevice(WaterMeter);
             string result = actionResult.Result.ToString();
@@ -153,15 +152,15 @@ namespace DeviceRegisterUnitTest
         public async Task Run_07_GettingWaterMeter()
         {
             Guid item;
-            IDevice WaterMeter = new WaterMeter("DUMMYTESTSN", "MyBrand", "MyModel");
+            Device WaterMeter = new WaterMeter("DUMMYTESTSN", "MyBrand", "MyModel");
             var actionResult = await controller.PostDevice(WaterMeter);
             OkObjectResult okor = actionResult.Result as OkObjectResult;
-            WaterMeter = (IDevice)okor.Value;
+            WaterMeter = (Device)okor.Value;
             item = WaterMeter.Id;
             var result = await controller.GetDevice(item);
             actionResult = await controller.GetDevice(item);
             okor = actionResult.Result as OkObjectResult;
-            IDevice returnedMeter = (IDevice)okor.Value;
+            Device returnedMeter = (Device)okor.Value;
             Assert.AreEqual(returnedMeter.Id, item);
         }
 
@@ -169,10 +168,10 @@ namespace DeviceRegisterUnitTest
         public async Task Run_08_DeletingWaterMeter()
         {
             Guid item;
-            IDevice WaterMeter = new WaterMeter("DUMMYTESTSN", "MyBrand", "MyModel");
+            Device WaterMeter = new WaterMeter("DUMMYTESTSN", "MyBrand", "MyModel");
             var actionResult = await controller.PostDevice(WaterMeter);
             OkObjectResult okor = actionResult.Result as OkObjectResult;
-            WaterMeter = (IDevice)okor.Value;
+            WaterMeter = (Device)okor.Value;
             item = WaterMeter.Id;
             actionResult = await controller.DeleteDevice(item);
             Assert.AreEqual(actionResult.Result.ToString(), "Microsoft.AspNetCore.Mvc.OkObjectResult");
@@ -181,17 +180,17 @@ namespace DeviceRegisterUnitTest
         [TestMethod]
         public async Task Run_09_PostingGateway()
         {
-            IDevice Gateway = new Gateway("DUMMYTESTSN", "MyBrand", "MyModel", "0.0.0.0", 8080);
+            Device Gateway = new Gateway("DUMMYTESTSN", "MyBrand", "MyModel", "0.0.0.0", 8080);
             var actionResult = await controller.PostDevice(Gateway);
             OkObjectResult okor = actionResult.Result as OkObjectResult;
-            Gateway = (IDevice)okor.Value;
+            Gateway = (Device)okor.Value;
             Assert.AreEqual(actionResult.Result.ToString(), "Microsoft.AspNetCore.Mvc.OkObjectResult");
         }
 
         [TestMethod]
         public async Task Run_10_PostingDuplicateGateway()
         {
-            IDevice Gateway = new Gateway("DUMMYTESTSN", "MyBrand", "MyModel", "0.0.0.0", 8080);
+            Device Gateway = new Gateway("DUMMYTESTSN", "MyBrand", "MyModel", "0.0.0.0", 8080);
             var actionResult = await controller.PostDevice(Gateway);
             actionResult = await controller.PostDevice(Gateway);
             string result = actionResult.Result.ToString();
@@ -202,15 +201,15 @@ namespace DeviceRegisterUnitTest
         public async Task Run_11_GettingGateway()
         {
             Guid item;
-            IDevice Gateway = new Gateway("DUMMYTESTSN", "MyBrand", "MyModel", "0.0.0.0", 8080);
+            Device Gateway = new Gateway("DUMMYTESTSN", "MyBrand", "MyModel", "0.0.0.0", 8080);
             var actionResult = await controller.PostDevice(Gateway);
             OkObjectResult okor = actionResult.Result as OkObjectResult;
-            Gateway = (IDevice)okor.Value;
+            Gateway = (Device)okor.Value;
             item = Gateway.Id;
             var result = await controller.GetDevice(item);
             actionResult = await controller.GetDevice(item);
             okor = actionResult.Result as OkObjectResult;
-            IDevice returnedMeter = (IDevice)okor.Value;
+            Device returnedMeter = (Device)okor.Value;
             Assert.AreEqual(returnedMeter.Id, item);
         }
 
@@ -218,10 +217,10 @@ namespace DeviceRegisterUnitTest
         public async Task Run_12_DeletingGateway()
         {
             Guid item;
-            IDevice Gateway = new Gateway("DUMMYTESTSN", "MyBrand", "MyModel", "0.0.0.0", 8080);
+            Device Gateway = new Gateway("DUMMYTESTSN", "MyBrand", "MyModel", "0.0.0.0", 8080);
             var actionResult = await controller.PostDevice(Gateway);
             OkObjectResult okor = actionResult.Result as OkObjectResult;
-            Gateway = (IDevice)okor.Value;
+            Gateway = (Device)okor.Value;
             item = Gateway.Id;
             actionResult = await controller.DeleteDevice(item);
             Assert.AreEqual(actionResult.Result.ToString(), "Microsoft.AspNetCore.Mvc.OkObjectResult");

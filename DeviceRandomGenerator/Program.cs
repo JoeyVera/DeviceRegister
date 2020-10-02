@@ -50,7 +50,7 @@ namespace DeviceRandomGenerator
 
         static void MakeUpSomeDevice(object sender, ElapsedEventArgs e)
         {
-            IDevice _device = null;
+            Device _device = null;
             Random rnd = new Random();
             int intType = rnd.Next(1, 4);
 

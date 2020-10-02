@@ -6,7 +6,7 @@ namespace DeviceRegisterNServiceBus
     public class AddDevice :
         ICommand
     {
-        public IDevice device { get; set; }
+        public Device device { get; set; }
     }
 }
 

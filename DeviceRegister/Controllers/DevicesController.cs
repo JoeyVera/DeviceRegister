@@ -19,7 +19,7 @@ namespace DeviceRegister.Controllers
         {
             _context = context;
         }
-
+  
         // GET api/Devices
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
@@ -27,13 +27,13 @@ namespace DeviceRegister.Controllers
             var EnergyMeterList = new List<EnergyMeter>();
             var WaterMeterList = new List<WaterMeter>();
             var GatewayList = new List<Gateway>();
-            var deviceList = new List<IDevice>();
+            var deviceList = new List<Device>();
 
             EnergyMeterList =  _context.EnergyMeter.ToList();
             WaterMeterList =  _context.WaterMeter.ToList();
             GatewayList =  _context.Gateway.ToList();
 
-            deviceList = EnergyMeterList.ConvertAll(x => (IDevice)x).Concat(WaterMeterList.ConvertAll(x => (IDevice)x)).Concat(GatewayList.ConvertAll(x => (IDevice)x)).ToList();
+            deviceList = EnergyMeterList.ConvertAll(x => (Device)x).Concat(WaterMeterList.ConvertAll(x => (Device)x)).Concat(GatewayList.ConvertAll(x => (Device)x)).ToList();
 
             return Ok(JsonConvert.SerializeObject(deviceList));
 
@@ -41,67 +41,65 @@ namespace DeviceRegister.Controllers
         
         // GET: api/Devices
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<IDevice>>> GetDevice()
+        public async Task<ActionResult<IEnumerable<Device>>> GetDevice()
         {
 
             var EnergyMeterList = new List<EnergyMeter>();
             var WaterMeterList = new List<WaterMeter>();
             var GatewayList = new List<Gateway>();
-            var deviceList = new List<IDevice>();
+            var deviceList = new List<Device>();
 
             EnergyMeterList = await _context.EnergyMeter.ToListAsync();
             WaterMeterList = await _context.WaterMeter.ToListAsync();
             GatewayList = await _context.Gateway.ToListAsync();
 
-            deviceList = EnergyMeterList.ConvertAll(x => (IDevice)x).Concat(WaterMeterList.ConvertAll(x => (IDevice)x)).Concat(GatewayList.ConvertAll(x => (IDevice)x)).ToList();
+            deviceList = EnergyMeterList.ConvertAll(x => (Device)x).Concat(WaterMeterList.ConvertAll(x => (Device)x)).Concat(GatewayList.ConvertAll(x => (Device)x)).ToList();
 
             return deviceList;
         }
         
         // GET: api/Devices/5       
         [HttpGet("{id}")]
-        public async Task<ActionResult<IDevice>> GetDevice(Guid id)
+        public async Task<ActionResult<Device>> GetDevice(Guid id)
         {
 
-            IDevice device = await _context.EnergyMeter.FindAsync(id);
+            Device device = new EnergyMeter();
+            device = await _context.EnergyMeter.FindAsync(id);
 
-            if (device != null)            
-                device = await _context.EnergyMeter.FindAsync(id);            
-            else
+            if(device == null)
             {
+                device = new WaterMeter();
                 device = await _context.WaterMeter.FindAsync(id);
-                if (device != null)                
-                    device = await _context.WaterMeter.FindAsync(id);                
-                else
+                if (device == null)
                 {
+                    device = new Gateway();
                     device = await _context.Gateway.FindAsync(id);
-                    if (device != null)                    
-                        device = await _context.Gateway.FindAsync(id);                    
-                    else                    
-                        return NotFound();                    
+                    if (device == null)
+                        return NotFound();
                 }
             }
-
             return Ok(device);
         }
 
-        public async Task<ActionResult<IDevice>> GetDeviceBySerialNumber(string serialNumber, string type)
+        public async Task<ActionResult<Device>> GetDeviceBySerialNumber(string serialNumber, string type)
         {
 
-
-            IDevice _device = null;
+            Device _device = new EnergyMeter();
 
             try
             {
                 switch (type)
                 {
                     case "DeviceRegister.Models.WaterMeter":
+                        _device = new WaterMeter();
                         _device = await _context.WaterMeter.FirstOrDefaultAsync(x => x.SerialNumber == serialNumber); break;
 
                     case "DeviceRegister.Models.EnergyMeter":
+                        _device = new EnergyMeter();
                         _device = await _context.EnergyMeter.FirstOrDefaultAsync(x => x.SerialNumber == serialNumber); break;
 
                     case "DeviceRegister.Models.Gateway":
+                        _device = new Gateway();
                         _device = await _context.Gateway.FirstOrDefaultAsync(x => x.SerialNumber == serialNumber); break;
                 }
             }
@@ -115,68 +113,26 @@ namespace DeviceRegister.Controllers
 
         // POST: api/Devices
         [HttpPost]
-        public async Task<ActionResult<IDevice>> PostDevice(IDevice device)
+        public async Task<ActionResult<Device>> PostDevice(Device device)
         {
-            IDevice _device = null;
-            string externalType = device.Type;
-            string type;
-
-            switch (externalType) //when receiving devices for external source - i.e. web POST - the type property must be checked to get the TypeOf of the object device
-            {
-                case "WaterMeter":
-                    type = "DeviceRegister.Models.WaterMeter"; break;
-
-                case "EnergyMeter":
-                    type = "DeviceRegister.Models.EnergyMeter"; break;
-
-                case "Gateway":
-                    type = "DeviceRegister.Models.Gateway"; break;
-
-                default:
-                    type = device.GetType().ToString(); break;
-            }
             try
             {
-                switch (type)  //Check if there is already a device of a specific type with that serial number
+                //If is coming from an external source as Base type is casted to a specific type
+                string checkIfDeviceUndefined = device.GetType().ToString();
+                if (checkIfDeviceUndefined == "DeviceRegister.Models.Device")
+                    device = UndefinedDeviceFactory.MakeSpecific(device);
+
+                //Check if there is already a device of a specific type with that serial number
+                var actionResult = await device.AlreadyExist(_context);
+                bool exists = actionResult.Value;
+               
+                if (!exists) //if the device was not found on the previous section, then create it.
                 {
-                    case "DeviceRegister.Models.WaterMeter":
-                        _device = await _context.WaterMeter.FirstOrDefaultAsync(x => x.SerialNumber == device.SerialNumber); break;
-
-                    case "DeviceRegister.Models.EnergyMeter":
-                        _device = await _context.EnergyMeter.FirstOrDefaultAsync(x => x.SerialNumber == device.SerialNumber); break;
-
-                    case "DeviceRegister.Models.Gateway":
-                        _device = await _context.Gateway.FirstOrDefaultAsync(x => x.SerialNumber == device.SerialNumber); break;
-                }
-
-
-                if (_device == null) //if the device was not found on the previous section, then create it.
-                {
-                    switch (type)
-                    {
-
-                        case "DeviceRegister.Models.WaterMeter":
-                            _device = new WaterMeter(device.SerialNumber, device.Brand, device.Model);
-                            _context.WaterMeter.Add((WaterMeter)_device);
-                            break;
-
-                        case "DeviceRegister.Models.EnergyMeter":
-                            _device = new EnergyMeter(device.SerialNumber, device.Brand, device.Model);
-                            _context.EnergyMeter.Add((EnergyMeter)_device);
-                            break;
-
-                        case "DeviceRegister.Models.Gateway":
-                            _device = new Gateway(device.SerialNumber, device.Brand, device.Model, device.Ip, device.Port);
-                            _context.Gateway.Add((Gateway)_device);
-                            break;
-                    }
-
-                    await _context.SaveChangesAsync();
-
+                    await device.SaveDeviceInDB(_context);
                 }
                 else //return error if the device already exists in the DB
                 {
-                    ModelState.AddModelError(_device.SerialNumber, "The serial number already exists!");
+                    ModelState.AddModelError(device.SerialNumber, "The serial number already exists!");
                     return BadRequest(ModelState);
                 }
             }
@@ -185,17 +141,20 @@ namespace DeviceRegister.Controllers
                 return BadRequest(err.Message);
             }
 
-            return Ok(_device);
+            return Ok(device);
+
         }
-                
+                       
+
         // DELETE: api/Devices/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<IDevice>> DeleteDevice(Guid id)
+        public async Task<ActionResult<Device>> DeleteDevice(Guid id)
         {
 
-            try { 
+            try {
 
-                IDevice device = await _context.EnergyMeter.FindAsync(id);
+                Device device = new EnergyMeter();
+                device = await _context.EnergyMeter.FindAsync(id);
                 await _context.SaveChangesAsync();
 
                 if (device != null)
@@ -204,6 +163,7 @@ namespace DeviceRegister.Controllers
                 }
                 else
                 {
+                    device = new WaterMeter();
                     device = await _context.WaterMeter.FindAsync(id);
                     if (device != null)
                     {
@@ -211,6 +171,7 @@ namespace DeviceRegister.Controllers
                     }
                     else
                     {
+                        device = new Gateway();
                         device = await _context.Gateway.FindAsync(id);
                         if (device != null)
                         {
@@ -233,5 +194,8 @@ namespace DeviceRegister.Controllers
                 return BadRequest(ex.Message);
             }
         }  
+
+
+        
     }
 }

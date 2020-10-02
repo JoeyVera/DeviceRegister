@@ -1,0 +1,20 @@
+{
+  "NServiceBus.MessageId": "c9b7f695-6cbc-4578-a2e9-ac430121a79f",
+  "NServiceBus.MessageIntent": "Send",
+  "NServiceBus.ConversationId": "7edf14a8-42e6-4890-b32b-ac430121a79f",
+  "NServiceBus.CorrelationId": "c9b7f695-6cbc-4578-a2e9-ac430121a79f",
+  "NServiceBus.ReplyToAddress": "RandomGenerator",
+  "NServiceBus.OriginatingMachine": "DESKTOP-BSPM0AC",
+  "NServiceBus.OriginatingEndpoint": "RandomGenerator",
+  "$.diagnostics.originating.hostid": "2e42da79622684b07cfcb1fc0ca71439",
+  "NServiceBus.ContentType": "text\/xml",
+  "NServiceBus.EnclosedMessageTypes": "DeviceRegisterNServiceBus.AddDevice, DeviceRegisterNServiceBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "NServiceBus.Version": "7.4.3",
+  "NServiceBus.TimeSent": "2020-09-27 17:34:36:045700 Z",
+  "NServiceBus.ProcessingStarted": "2020-09-27 17:34:36:058023 Z",
+  "NServiceBus.ProcessingEnded": "2020-09-27 17:34:36:077112 Z",
+  "$.diagnostics.hostid": "570688a8e5caa5bcc4124c3b1b0aa6a9",
+  "$.diagnostics.hostdisplayname": "DESKTOP-BSPM0AC",
+  "NServiceBus.ProcessingMachine": "DESKTOP-BSPM0AC",
+  "NServiceBus.ProcessingEndpoint": "DeviceRegisterNServiceBus"
+}
