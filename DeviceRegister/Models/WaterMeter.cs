@@ -7,8 +7,6 @@ namespace DeviceRegister.Models
 {
     public class WaterMeter : Device
     {
-        public WaterMeter() { }
-
         public WaterMeter(string serialNumber, string brand, string model) : base(serialNumber, brand, model) {}
 
         public override async Task<ActionResult<bool>> AlreadyExist(DevicesContext dbContext)

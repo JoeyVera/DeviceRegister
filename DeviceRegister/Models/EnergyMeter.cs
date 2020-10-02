@@ -8,8 +8,6 @@ namespace DeviceRegister.Models
 {
     public class EnergyMeter : Device
     {
-        public EnergyMeter() {}
-
         public EnergyMeter(string serialNumber, string brand, string model) : base (serialNumber,  brand,  model) {}
 
         public override async Task<ActionResult<bool>> AlreadyExist(DevicesContext dbContext)

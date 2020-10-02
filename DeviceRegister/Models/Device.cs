@@ -16,8 +16,6 @@ namespace DeviceRegister.Models
         public string Ip { get; set; }
         public int? Port { get; set; }
 
-        public Device() { }
-
         public Device(string serialNumber, string brand, string model)
         {
             if (string.IsNullOrEmpty(serialNumber.Trim(' ')))
