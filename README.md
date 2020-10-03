@@ -21,7 +21,8 @@ creating only one table with a device type field would have been easier, but I u
 datasources using an ORM, therefore I decided to store the devices split in different repositories.
 
 a) Back End - The backend is an ASP.NET Core API app that listens to HTTP requests and adds the POSTed devices to the MSSQL database. It should be started with the Visual
-Studio IIS Express.
+Studio IIS Express. Also, it has a NServiceBus service that allows to receive devices using the BUS. In this example the DeviceRandomGenerator app will create random devices
+and send them to the backend.
 
 b) Front End 1 - As a frontend I have created a static HTML page that can be found in the folder \DeviceRegister\HTMLFrontEnd. The file registration.html can be open with
 any recent browser directly. It is important - if asked - to allow blocked content in order to enable the javascript functionality.
@@ -39,23 +40,19 @@ d)Front End 3 - The requirements also suggested a Windows Desktop app Frontend, 
 
 e) DeviceRandomGenerator. In order to implement an NServiceBus example I have created this Console App that creates a device every 10 seconds and send it to the BUS queue.
 
-f) DeviceRegisterNServiceBus. This is another console application that read the NServiceBus application and store the device in the database. Initially I wanted the backend
-to perform this function - and I actually have another version of the solution that works this way - but there is an issue adding this feature to the ASP.NET API: When the
-server is started by the IIS Express, it does not wake up until the first HTTP request is received, therefore the queue stays unread until that moment. Because of this
-I decided to create a specific app to perform this action.
-
 
 2 - Execution of the different project
 
 As commented above, it is required to create the database before using any of the different apps provided. There is no additional requirement. Needless to say for the Frontends
 to operate it is necessary the backend to be up and running.
 
-The DeviceRandomGenerator and DeviceRegisterNServiceBus can be started independently and will work following the NServiceBus decoupling feature.
+The DeviceRandomGenerator can be started independently and will work following the NServiceBus decoupling feature.
 
-If the solution is started with the "Start" button of VS or the "F5" key, the Backend, the DeviceRandomGenerator, and the DeviceRegisterNServiceBus will be started.
+If the solution is started with the "Start" button of VS or the "F5" key, the Backend and the DeviceRandomGenerator will be started.
 
 There is an additional project "Platform" provided by the NServiceBus resources that I found very useful to understand the product and monitorized the communication through
-the BUS, It is not longer required by the other apps, but I have left it included for experimentation.
+the BUS, It is not longer required by the other apps, but I have left it included for experimentation. Also, a console app (DeviceRegisterNServiceBus_Obsolete) capable of
+receiving devices via NServicebus is in the solution but no longer use. It has been left there as a example or reference.
 
 
 3 - Comments, notes and assumptions
@@ -65,11 +62,8 @@ occurred to me during the development - in example: to use a RegEx function to c
 spend the rest of my available time to research the NServiceBus that I recon to be more important in the result of the exercise.
 
 I try as much as possible to write clear code and SOLID principles, again always thinking on saving time for the rest of the tasks. There are not many comments because
-the exercise does not contain much of complicate procedures.
+the exercise does not contain much of complicate procedures. In any case, some refactorization will be applied further.
 
-I have recorded a Review here:
-
-https://www.youtube.com/watch?v=NOR-uWpikBI&feature=youtu.be
 
 Last thing, the list of hardcoded references, just in case you want to run the solution with different configuration:
 
