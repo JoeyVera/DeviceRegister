@@ -25,17 +25,9 @@ namespace DeviceRegister.Models
 
         public override async Task<ActionResult<Device>> SaveDeviceInDB(DevicesContext dbContext)
         {
-            try
-            {
                 dbContext.Gateway.Add(this);
                 await dbContext.SaveChangesAsync();
                 return this;
-            }
-            catch (Exception err)
-            {
-                //todo
-                return null;
-            }
         }
     }
 }

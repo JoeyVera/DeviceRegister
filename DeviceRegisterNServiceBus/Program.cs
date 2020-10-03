@@ -4,6 +4,9 @@ using NServiceBus;
 
 namespace DeviceRegisterNServiceBus
 {
+
+    // This project is a console app nservicebus receiver. Since this functionality has been added to DeviceRegister project (backend)
+    // this is not longer required, but stays here for reference or as an example.
     class Program
     {
         static async Task Main()

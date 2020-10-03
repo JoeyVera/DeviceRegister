@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platform", "Platform\Platfo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeviceRandomGenerator", "DeviceRandomGenerator\DeviceRandomGenerator.csproj", "{E2014560-9FDF-4914-8008-5C2A4C788498}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceRegisterNServiceBus", "DeviceRegisterNServiceBus\DeviceRegisterNServiceBus.csproj", "{63856EDC-9DEF-43B9-927B-C783B7156B7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeviceRegisterNServiceBus_Obsolete", "DeviceRegisterNServiceBus\DeviceRegisterNServiceBus_Obsolete.csproj", "{63856EDC-9DEF-43B9-927B-C783B7156B7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

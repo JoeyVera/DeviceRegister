@@ -21,17 +21,9 @@ namespace DeviceRegister.Models
 
         public override async Task<ActionResult<Device>> SaveDeviceInDB(DevicesContext dbContext)
         {
-            try
-            {
                 dbContext.WaterMeter.Add(this);
                 await dbContext.SaveChangesAsync();
                 return this;
-            }
-            catch (Exception err)
-            {
-                //todo
-                return null;
-            }
         }
     }
 }

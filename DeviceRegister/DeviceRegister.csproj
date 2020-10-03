@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Community.NServiceBus.WebHost" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -22,6 +23,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="NServiceBus" Version="7.4.3" />
+    <PackageReference Include="NServiceBus.Heartbeat" Version="3.0.1" />
+    <PackageReference Include="NServiceBus.Metrics.ServiceControl" Version="3.0.4" />
   </ItemGroup>
 
 </Project>

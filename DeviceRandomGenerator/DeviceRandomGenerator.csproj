@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DeviceRegisterNServiceBus\DeviceRegisterNServiceBus.csproj" />
     <ProjectReference Include="..\DeviceRegister\DeviceRegister.csproj" />
   </ItemGroup>
 

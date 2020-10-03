@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DeviceRegister.Models;
 using Microsoft.EntityFrameworkCore;
+using NServiceBus;
 
 namespace DeviceRegister
 {
@@ -27,6 +28,13 @@ namespace DeviceRegister
             {
                 options.AddPolicy("AllowAll", builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
             });
+
+            var endpointConfiguration = new EndpointConfiguration("DeviceRegister");
+            endpointConfiguration.UseTransport<LearningTransport>();
+
+            endpointConfiguration.SendHeartbeatTo("Particular.ServiceControl");
+
+            services.AddNServiceBus(endpointConfiguration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

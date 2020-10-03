@@ -1,0 +1,1 @@
+{"ExecutedAt":"2020-10-03T10:49:16.6498555Z","EndpointName":"DeviceRegister","HostId":"b134cd23-4279-9c37-f88e-fda8066ff802","Host":"DESKTOP-BSPM0AC"}

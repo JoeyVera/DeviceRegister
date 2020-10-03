@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DeviceRegister.Models
 {
+    // Initially this was an abstract class, but apparently when a controller method such us PostDevice(Device device) cannnot be invoked if Device is abstract.
+
     public class Device
     {
         public Guid Id { get; set; }
@@ -31,7 +33,7 @@ namespace DeviceRegister.Models
     }
 
     //Converts a IDevice coming from an external source - i.e. http post - into an expecific type
-    public static class UndefinedDeviceFactory {
+    public static class DefinedDeviceFactory {
         public static Device MakeSpecific(Device device)
         {
             switch (device.Type) //when receiving devices for external source - i.e. web POST - the type property must be checked to get the TypeOf of the object device

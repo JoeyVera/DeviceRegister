@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DeviceRegister.Models;
-using Newtonsoft.Json;
 
 namespace DeviceRegister.Controllers
 {
@@ -20,27 +19,8 @@ namespace DeviceRegister.Controllers
             _context = context;
         }
   
-        // GET api/Devices
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            var EnergyMeterList = new List<EnergyMeter>();
-            var WaterMeterList = new List<WaterMeter>();
-            var GatewayList = new List<Gateway>();
-            var deviceList = new List<Device>();
-
-            EnergyMeterList =  _context.EnergyMeter.ToList();
-            WaterMeterList =  _context.WaterMeter.ToList();
-            GatewayList =  _context.Gateway.ToList();
-
-            deviceList = EnergyMeterList.ConvertAll(x => (Device)x).Concat(WaterMeterList.ConvertAll(x => (Device)x)).Concat(GatewayList.ConvertAll(x => (Device)x)).ToList();
-
-            return Ok(JsonConvert.SerializeObject(deviceList));
-        }
-        
-        // GET: api/Devices
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Device>>> GetDevice()
+        public async Task<ActionResult<IEnumerable<Device>>> GetDevices()
         {
             var EnergyMeterList = new List<EnergyMeter>();
             var WaterMeterList = new List<WaterMeter>();
@@ -110,7 +90,7 @@ namespace DeviceRegister.Controllers
                 //If is coming from an external source as Base type is casted to a specific type
                 string checkIfDeviceUndefined = device.GetType().ToString();
                 if (checkIfDeviceUndefined == "DeviceRegister.Models.Device")
-                    device = UndefinedDeviceFactory.MakeSpecific(device);
+                    device = DefinedDeviceFactory.MakeSpecific(device);
 
                 //Check if there is already a device of a specific type with that serial number
                 var actionResult = await device.AlreadyExist(_context);
@@ -133,8 +113,7 @@ namespace DeviceRegister.Controllers
 
             return Ok(device);
 
-        }
-                       
+        }                       
 
         // DELETE: api/Devices/5
         [HttpDelete("{id}")]
@@ -170,9 +149,7 @@ namespace DeviceRegister.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }  
+        }
 
-
-        
     }
 }
